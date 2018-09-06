@@ -1,0 +1,340 @@
+- name: "Ensure mounting of cramfs filesystem is disabled"
+  lineinfile:
+      dest: /etc/modprobe.d/cramfs.conf
+      regexp: "^(#)?install cramfs(\\s|$)"
+      line: "install cramfs /bin/true"
+      state: present
+      owner: root
+      group: root
+      mode: 0644
+      create: true
+  when:
+      - ubuntu1804cis_fs_rule_1
+  tags:
+      - cis
+      - backend
+
+- name: "Remove cramfs module"
+  modprobe:
+      name: cramfs
+      state: absent
+  when:
+      - ubuntu1804cis_fs_rule_2
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure mounting of freevxfs filesystem is disabled"
+  lineinfile:
+      dest: /etc/modprobe.d/freevxfs.conf
+      regexp: "^(#)?install freevxfs"
+      line: "install freevxfs /bin/true"
+      state: present
+      create: true
+  when:
+      - ubuntu1804cis_fs_rule_3
+  tags:
+      - cis
+      - backend
+
+- name: "Remove freevxfs module"
+  modprobe:
+      name: freevxfs
+      state: absent
+  when:
+      - ubuntu1804cis_fs_rule_4
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure mounting of jffs2 filesystem is disabled"
+  lineinfile:
+      dest: /etc/modprobe.d/jffs2.conf
+      regexp: "^(#)?install jffs2(\\s|$)"
+      line: "install jffs2 /bin/true"
+      state: present
+      create: true
+  when:
+      - ubuntu1804cis_fs_rule_5
+  tags:
+      - cis
+      - backend
+
+- name: "Remove jffs2 module"
+  modprobe:
+      name: jffs2
+      state: absent
+  when:
+      - ubuntu1804cis_fs_rule_6
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure mounting of hfs filesyetms is disabled"
+  lineinfile:
+      dest: /etc/modprobe.d/hfs.conf
+      regexp: "^(#)?install hfs(\\s|$)"
+      line: "install hfs /bin/true"
+      state: present
+      create: true
+  when:
+      - ubuntu1804cis_fs_rule_7
+  tags:
+      - cis
+      - backend
+
+- name: "Remove hfs module"
+  modprobe:
+      name: hfs
+      state: absent
+  when:
+      - ubuntu1804cis_fs_rule_8
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure mounting of hfsplus filesystem is disabled"
+  lineinfile:
+      dest: /etc/modprobe.d/hfsplus.conf
+      regexp: "^(#)?install hfsplus(\\s|$)"
+      line: "install hfsplus /bin/true"
+      state: present
+      create: true
+  when:
+      - ubuntu1804cis_fs_rule_9
+  tags:
+      - cis
+      - backend
+
+- name: "Remove hfsplus module"
+  modprobe:
+      name: hfsplus
+      state: absent
+  when:
+      - ubuntu1804cis_fs_rule_10
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure mounting of udf filesystem is disabled"
+  lineinfile:
+      dest: /etc/modprobe.d/udf.conf
+      regexp: "^(#)?install udf(\\s|$)"
+      line: "install udf /bin/true"
+      state: present
+      create: true
+  when:
+      - ubuntu1804cis_fs_rule_11
+  tags:
+      - cis
+      - backend
+
+- name: "Remove udf module"
+  modprobe:
+      name: udf
+      state: absent
+  when:
+      - ubuntu1804cis_fs_rule_12
+  tags:
+      - cis
+      - backend
+
+#- name: "Ensure separate partition exists for /tmp | enable and start/restart tmp.mount"
+#  copy:
+#      src: "{{ tmp_mount_file }}"
+#      dest: /etc/systemd/system/tmp.mount
+#      owner: root
+#      group: root
+#      mode: 0644
+#      force: true
+#      remote_src: true
+#  notify:
+#      - systemctl restart tmp.mount
+#  when:
+#      - ubuntu1804cis_fs_rule_13
+#  tags:
+#      - cis
+#      - backend
+#
+#- name: "Ensure separate partition exists for /tmp | enable and start/restart tmp.mount"
+#  systemd:
+#      name: tmp.mount
+#      daemon_reload: yes
+#      enabled: yes
+#      masked: no
+#      state: started
+#  when:
+#      - ubuntu1804cis_fs_rule_14
+#  tags:
+#      - cis
+#      - backend
+#
+#- name: "Ensure nodev option set on /tmp partition\n
+#         Ensure nosuid option set on /tmp partition\n
+#         | drop custom tmp.mount"
+#  ini_file:
+#      path: "{{ item }}"
+#      section: Mount
+#      option: Options
+#      value: "{{ tmp_mount_options }}"
+#      no_extra_spaces: true
+#  with_items:
+#      - "{{ tmp_mount_file }}"
+#      - /etc/systemd/system/tmp.mount
+#  when:
+#      - ubuntu1804cis_fs_rule_15
+#      - ubuntu1804cis_fs_rule_16
+#  tags:
+#      - cis
+#      - backend
+#
+#
+#- name: "Ensure separate partition exists for /var"
+#  shell: mount | grep "\/var"
+#  register: var_mounted
+#  changed_when: false
+#  failed_when: false
+#  when:
+#      - ubuntu1804cis_fs_rule_17
+#  tags:
+#      - cis
+#      - backend
+
+##- name: Mounting var partition
+##  mount:
+##      name: /var
+##      src: /dev/xvdg1
+##      fstype: ext4
+##      state: mounted
+##  when:
+##      - ubuntu1804cis_fs_rule_17
+##  tags:
+##      - cis
+##      - backend
+
+#- name: "Ensure separate partition exists for /var/tmp"
+#  shell: mount | grep "\/var/tmp"
+#  register: var_tmp_mounted
+#  changed_when: false
+#  failed_when: false
+#  when:
+#      - ubuntu1804cis_fs_rule_18
+#  tags:
+#      - cis
+#      - backend
+
+#- name: "Ensure nodev option set on /var/tmp partition\n
+#         Ensure nosuid option set on /var/tmp partition\n
+#         Ensure noexec option set on /var/tmp partition"
+#  mount:
+#      name: /var/tmp
+#      src: "{{ vartmp_src }}"
+#      state: mounted
+#      fstype: "{{ vartmp_fs }}"
+#      opts: "{{ vartmp_opts }}"
+#  when:
+#      - ubuntu1804cis_fs_rule_19
+#  tags:
+#      - cis
+#      - backend
+#
+#
+#- name: "Ensure separate partition exists for /var/log"
+#  shell: mount | grep "\/var/log "
+#  register: var_log_mounted
+#  changed_when: false
+#  failed_when: false
+#  when:
+#      - ubuntu1804cis_fs_rule_20
+#  tags:
+#      - cis
+#      - backend
+
+#- name: "Ensure separate partition exists for /var/log/audit"
+#  shell: mount | grep "\/var/log/audit "
+#  register: var_log_audit_mounted
+#  changed_when: false
+#  failed_when: false
+#  when:
+#      - ubuntu1804cis_fs_rule_21
+#  tags:
+#      - cis 
+#      - backend
+
+#- name: "Ensure separate partition exists for /home"
+#  shell: mount | grep "\/home "
+#  register: home_mounted
+#  changed_when: false
+#  failed_when: false
+#  when:
+#      - ubuntu1804cis_fs_rule_22
+#  tags:
+#      - cis
+#      - backend
+
+#- name: "Ensure nodev option set on home partition"
+#  mount:
+#      name: /home
+#      src: "{{ home_sr }}"
+#      state: mounted
+#      fstype: "{{ home_type }}"
+#      opts: "nodev"
+#  when:
+#      - ubuntu1804cis_fs_rule_23
+#  tags:
+#      - cis
+#      - backend
+#
+#- name: "Ensure nodev option set on /dev/shm partition\n
+#         Ensure nosuid option set on /dev/shm partition\n
+#         Ensure noexec option set on /dev/shm partition"
+#  mount:
+#      name: /dev/shm
+#      src: "{{ devs_src }}"
+#      state: mounted
+#      fstype: "{{ devs_fs }}"
+#      opts: "{{ devs_opts }}"
+#  when:
+#      - ubuntu1804cis_fs_rule_24
+#  tags:
+#      - cis
+#      - backend
+#
+#
+#- name: "Ensure nodev option set on removable media partitions"
+#  command: /bin/true
+#  changed_when: false
+#  when:
+#      - ubuntu1804cis_fs_rule_25
+#  tags:
+#      - cis
+#      - backend
+
+#- name: "Ensure nosuid option set on removable media partitions"
+#  command: /bin/true
+#  changed_when: false
+#  when:
+#      - ubuntu1804cis_fs_rule_26
+#  tags:
+#      - cis
+#      - backend
+
+#- name: "Ensure noexec option set on removable media partitions"
+#  command: /bin/true
+#  changed_when: false
+#  when:
+#      - ubuntu1804cis_fs_rule_27
+#  tags:
+#      - cis
+#      - backend
+
+#- name: "Ensure sticky bit is set on all world-writable directories"
+#  shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
+#  changed_when: false
+#  failed_when: false
+#  when:
+#      - ubuntu1804cis_fs_rule_28
+#  tags:
+#      - cis
+#      - backend
+

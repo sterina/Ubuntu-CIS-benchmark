@@ -1,0 +1,97 @@
+- name: "Ensure permissions on /etc/passwd are configured"
+  file:
+      dest: /etc/passwd
+      owner: root
+      group: root
+      mode: 0644
+  when:
+      - ubuntu1804cis_sys_rule_1
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure permissions on /etc/shadow are configured"
+  file:
+      dest: /etc/shadow
+      owner: root
+      group: shadow
+      mode: 0640
+  when:
+      - ubuntu1804cis_sys_rule_2
+  tags:
+      - cis 
+      - backend
+
+- name: "Ensure permissions on /etc/group are configured"
+  file:
+      dest: /etc/group
+      owner: root
+      group: root
+      mode: 0644
+  when:
+      - ubuntu1804cis_sys_rule_3
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure permissions on /etc/gshadow are configured"
+  file:
+      dest: /etc/gshadow
+      owner: root
+      group: shadow
+      mode: 0640
+  when:
+      - ubuntu1804cis_sys_rule_4
+  tags:
+      - cis
+      - backend
+
+
+- name: "Ensure permissions on /etc/passwd- are configured"
+  file:
+      dest: /etc/passwd-
+      owner: root
+      group: root
+      mode: 0644
+  when:
+      - ubuntu1804cis_sys_rule_5
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure permissions on /etc/shadow- are configured"
+  file:
+      dest: /etc/shadow-
+      owner: root
+      group: shadow
+      mode: 0640
+  when:
+      - ubuntu1804cis_sys_rule_6
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure permissions on /etc/group- are configured"
+  file:
+      dest: /etc/group-
+      owner: root
+      group: root
+      mode: 0644
+  when:
+      - ubuntu1804cis_sys_rule_7
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure permissions on /etc/gshadow- are configured"
+  file:
+      dest: /etc/gshadow-
+      owner: root
+      group: shadow
+      mode: 0640
+  when:
+      - ubuntu1804cis_sys_rule_8
+  tags:
+      - cis
+      - backend
+

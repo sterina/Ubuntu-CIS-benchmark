@@ -1,0 +1,74 @@
+---
+# tasks file for CIS-Ubuntu-Hardnening-18-04
+   - name: include play
+     include: fssetup.yml
+     become: true
+     when: ubuntu1804cis_fs
+     tags: 
+      - cis
+      - backend
+ 
+   - include: fileintegrity.yml
+     become: true
+     when: ubuntu1804cis_fint
+     tags: 
+      - cis
+      - backend
+   
+   - include: service.yml
+     become: true
+     when: ubuntu1804cis_sr
+     tags:
+      - cis
+      - backend
+   
+   
+   - include: network.yml
+     become: true
+     when: ubuntu1804cis_net
+     tags:
+      - cis
+      - backend
+   
+   
+   - include: logs.yml
+     become: true
+     when: ubuntu1804cis_log
+     tags: 
+      - cis
+      - backend
+   
+   - include: cron.yml
+     become: true
+     when: ubuntu1804cis_cron
+     tags: 
+      - cis
+      - backend
+  
+   - include: ssh.yml  
+     become: true
+     when: ubuntu1804cis_ssh
+     tags: 
+      - cis
+      - backend
+        
+   - include: pam.yml  
+     become: true
+     when: ubuntu1804cis_pam
+     tags: 
+      - cis
+      - backend
+      
+   - include: user.yml  
+     become: true
+     when: ubuntu1804cis_user
+     tags: 
+      - cis
+      - backend
+        
+   - include: sysfile_perm.yml  
+     become: true
+     when: ubuntu1804cis_sys
+     tags: 
+      - cis
+      - backend

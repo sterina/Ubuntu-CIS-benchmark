@@ -1,0 +1,36 @@
+- name: "Ensure default group for the root account is GID 0"
+  command: usermod -g 0 root
+  changed_when: false
+  failed_when: false
+  when:
+      - ubuntu1804cis_user_rule_1
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure default user umask is 027 or more restrictive"
+  block:
+
+      - name: "Check if bashrc exists"
+        stat:
+            path: "/etc/bashrc"
+        register: bashrc_present
+
+      - name: "Ensure default user umask is 027 or more restrictive - /etc/bashrc"
+        replace:
+            path: /etc/bashrc
+            regexp: '(^\s+umask) 002'
+            replace: '\1 027'
+        when: bashrc_present.stat.exists
+
+      - name: "Ensure default user umask is 027 or more restrictive - /etc/profile"
+        replace:
+            path: /etc/profile
+            regexp: '(^\s+umask) 002'
+            replace: '\1 027'
+  when:
+      - ubuntu1804cis_user_rule_2
+  tags:
+      - cis
+      - backend
+

@@ -1,0 +1,45 @@
+- name: "Ensure AIDE is installed"
+  apt:
+      name: aide
+      state: present
+  when:
+      - ubuntu1804cis_fint_rule_1
+  tags:
+      - cis
+      - backend
+
+- name: "Ensure AIDE is installed"
+  command: /usr/bin/aide --init -B 'database_out=file:/var/lib/aide/aide.db.gz'
+  args:
+      creates: /var/lib/aide/aide.db.gz
+  changed_when: false
+  failed_when: false
+  async: 45
+  poll: 0
+  when:
+      - config_aide
+      - ubuntu1804cis_fint_rule_2
+  tags:
+      - cis
+      - backend
+
+
+
+- name: "Ensure filesystem integrity is regularly checked"
+  cron:
+      name: Run AIDE integrity check weekly
+      cron_file: "{{ cron_file }}"
+      user: "{{ cron_user }}"
+      minute: "{{ aide_minute | default('0') }}"
+      hour: "{{ aide_hour | default('5') }}"
+      day: "{{ aide_day | default('*') }}"
+      month: "{{ aide_month | default('*') }}"
+      weekday: "{{ aide_weekday | default('*') }}"
+      job: "{{ aide_job }}"
+  when:
+      - ubuntu1804cis_fint_rule_3
+  tags:
+      - cis
+      - backend
+
+

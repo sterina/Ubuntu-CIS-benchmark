@@ -1,0 +1,98 @@
+- name: "Ensure time synchronization is in use - service install"
+  apt:
+    update_cache: yes
+    name: "{{ time_sync }}"
+    state: present
+  when:
+   - ubuntu1804cis_sr_rule_1
+  tags:
+   - cis
+   - backend
+
+- name: "Ensure time synchronization is in use - service start"
+  systemd:
+    name: "{{ time_sync }}"
+    daemon_reload: yes
+    enabled: yes
+    masked: no
+    state: started
+  when:
+   - ubuntu1804cis_sr_rule_2
+  tags:
+   - cis
+   - backend
+
+- name: "Ensure ntp is configured | modify /etc/ntp.conf"
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    owner: root
+    group: root
+    mode: 0644
+  when:
+     - ubuntu1804cis_sr_rule_3
+  tags:
+     - cis
+     - backend
+    
+- name: "Ensure ntp is configured | modify /etc/init.d/ntp"
+  lineinfile:
+    dest: /etc/init.d/ntp
+    regexp: "^RUNASUSER"
+    line: "RUNASUSER=ntp"
+  when:
+    - time_sync == "ntp"
+    - ubuntu1804cis_sr_rule_4
+  tags:
+    - cis
+    - backend
+
+
+#- name: "Ensure mail transfer agent is configured for local-only mode"
+#  lineinfile:
+#    dest: /etc/postfix/main.cf
+#    regexp: "^(#)?inet_interfaces"
+#    line: "inet_interfaces = localhost"
+#  when:
+#    - is_mail_server == false
+#    - ubuntu1804cis_sr_rule_5
+#  tags:
+#    - cis 
+#    - backend
+
+#- name: "Ensure time synchronization is in use - service start"
+#  systemd:
+#    name: postfix
+#    daemon_reload: yes
+#    enabled: yes
+#    masked: no
+#    state: started
+#  when:
+#   - ubuntu1804cis_sr_rule_6
+#  tags:
+#   - cis
+#   - backend
+
+- name: "Ensure rsync service is not enabled "
+  systemd:
+    name: rsync
+    state: stopped
+    enabled: false
+  when:
+   - rsyncd_server == false 
+   - ubuntu1804cis_sr_rule_7
+  tags:
+   - cis
+   - backend
+
+- name: "Ensure telnet client is not installed"
+  apt:
+   name: telnet
+   state: absent
+  when:
+   - ubuntu1804cis_sr_rule_8
+  tags:
+   - cis
+   - backend
+
+
