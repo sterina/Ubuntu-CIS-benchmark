@@ -1,2 +1,0 @@
-[env]
-172.16.0.247 ansible_ssh_user=sterina ansible_ssh_pass=abu3Koof ansible_sudo_pass=abu3Koof 
